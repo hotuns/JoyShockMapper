@@ -541,10 +541,10 @@ public:
 
 	void RefreshDeviceList()
 	{
-		SDL_PumpEvents();
-		SDL_UpdateJoysticks();
-		SDL_UpdateGamepads();
-		SDL_Delay(20);
+		// GetDeviceCount is called by AutoConnect once per second while holding
+		// controller_lock, which is also needed by the input polling thread.
+		// Refresh without waiting: a discovery delay here stalls gyro and mouse
+		// output even when the connected devices have not changed.
 		SDL_PumpEvents();
 		SDL_UpdateJoysticks();
 		SDL_UpdateGamepads();
